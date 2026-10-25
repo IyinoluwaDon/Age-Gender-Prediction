@@ -1,12 +1,8 @@
-# Chest X-ray Age and Dataset Sex-Class Demo
+# Chest X-ray Age and Dataset Sex-Class Models
 
-A Flask demonstration that applies two saved Keras models to an uploaded chest radiograph: one estimates age and one predicts the dataset's binary sex class.
+Flask inference application for two separately trained Keras deep convolutional neural networks that analyze chest radiographs: an age estimator and a classifier for the dataset's binary sex label. The application serves the models; the saved weights and original training notebook are in `ML_model/`.
 
-## What is included
-
-- In-memory PNG/JPEG uploads with an 8 MB request limit
-- Grayscale, inverted 128 × 128 preprocessing
-- Lazy model loading and request/preprocessing regression tests
+The notebook joins a Kaggle-style image directory with `train_age.csv` and `train_gender.csv`, converts images to grayscale, inverts pixel values, and resizes them to 128 x 128. The gender network is a sigmoid binary classifier trained with Adam and binary cross-entropy; the age network uses a linear output trained with Adam and mean-squared error. The Flask app applies the same preprocessing to in-memory PNG/JPEG uploads and loads each model on demand. `tests/` covers upload and preprocessing behavior.
 
 ## Run locally
 
@@ -17,21 +13,4 @@ python -m pip install -r requirements.txt
 python app/app.py
 ```
 
-## Verify
-
-python -m pip install -r requirements-dev.txt
-python -m pytest -q
-
-## Repository map
-
-`app/` contains the Flask interface and inference code. `ML_model/` contains the saved models and original notebook. `tests/` covers upload and preprocessing behavior.
-
-## Evidence and limitations
-
-The supplied artifacts can be loaded for inference; automated tests cover request handling and preprocessing, not medical accuracy. Historical notebook metrics are not independently reproduced, and the notebook's evaluation overlaps training data.
-
-Educational reproduction only; not for diagnosis, screening, treatment, employment, insurance or other consequential decisions. The target is a dataset code, not a reliable inference of a person's identity. Dataset and model redistribution rights must be confirmed. No training data is bundled.
-
-## License
-
-No repository license file is included. Unless the project owner adds a license, do not assume the code, data or model artifacts may be redistributed or reused. Verify third-party data and model terms separately.
+See `ML_model/` for the training notebook and model artifacts and `requirements-dev.txt` for the test dependencies.
